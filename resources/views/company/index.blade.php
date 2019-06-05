@@ -5,9 +5,21 @@
     
         <div class="col-md-12">
             <div class="company-profile">
-                <img src="{{asset('cover/google.jpg')}}" alt="" style="width:100%; height:250px">
+                <div class="cover">
+                    @if(empty(Auth::user()->company->cover_photo))
+                        <img src="{{asset('cover/google.jpg')}}" alt="" width="100%" height="250px">
+                    @else
+                        <img src="{{asset('uploads/coverphoto')}}/{{Auth::user()->company->cover_photo}}" width="100%" height="250px">
+                    @endif
+                </div>
+                  
+               
                 <div class="company-desc">
-                        <img src="{{asset('avatar/clogo.jpg')}}" alt="" width="100">
+                        @if(empty(Auth::user()->company->logo))
+                            <img src="{{asset('logo/clogo.jpg')}}" alt="" width="100">
+                         @else
+                            <img src="{{asset('uploads/logo/')}}/{{Auth::user()->company->logo}}" alt="" width="100">
+                        @endif
                         <p>{{ $company->description }}</p>
                         <h1>{{ $company->cname }}</h1>
                         <p> Slogan-{{ $company->slogan }}&nbsp;
@@ -34,6 +46,7 @@
                                 <br>
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp; {{ $job->type }}
                             </td>
+                            
                             <td><i class="fa fa-map-marker" aria-hidden="true"></i>
                             &nbsp;Address: {{ $job->address }}</td>
                             <td><i class="fa fa-globe" aria-hidden="true"></i>

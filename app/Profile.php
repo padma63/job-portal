@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
 {
-    //
+    protected $guarded = [];
+
+    public function user(){
+        return $this->blongsTo('App\User');
+    }
 }
