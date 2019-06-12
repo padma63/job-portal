@@ -8,6 +8,11 @@ use Auth;
 
 class CompanyController extends Controller
 {
+    public function __construct(){
+
+        $this->middleware('employer',['except' => array('index')]);
+    
+    }
     public function index($id, Company $company){
         return view('company.index',compact('company'));
     }

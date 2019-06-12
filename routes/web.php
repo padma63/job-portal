@@ -17,6 +17,8 @@ Route::post('/jobs/store', 'JobsController@store')->name('job.store');
 Route::get('/jobs/{id}/edit', 'JobsController@edit')->name('job.edit');
 Route::post('/jobs/{id}/edit', 'JobsController@update')->name('job.update');
 Route::get('/jobs/my-job', 'JobsController@myJob')->name('job.myjob');
+Route::post('/applications/{id}','JobsController@apply')->name('apply');
+Route::get('/jobs/applications','JobsController@applicant')->name('applicant');
 
 Auth::routes();
 

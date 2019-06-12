@@ -31,11 +31,17 @@
                 <p>Employment Type: {{ $job->type }}</p>
                 <p>Position: {{ $job->position }}</p>
                 <p>Date: {{ $job->created_at->diffForHumans() }}</p>
+                <p>Last date to apply:{{ date('F d,Y', strtotime($job->last_date))}}</p>
                 </div>
             </div>
             <br>
         @if(Auth::check() && Auth::user()->user_type == 'seeker')
-            <button class="btn btn-success" style="width: 100%; ">Apply</button>
+            @if(!$job->checkApplication())
+                <form action="{{route('apply',[$job->id])}}" method="POST">
+                    @csrf
+                    <button class="btn btn-success" style="width: 100%; ">Apply</button>
+                </form>
+            @endif
         @endif
         </div>
         

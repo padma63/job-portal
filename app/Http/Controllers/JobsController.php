@@ -5,14 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Job;
 use App\Company;
+use Auth;
 use App\Http\Requests\JobPostRequest;
 
 class JobsController extends Controller
 {
+
+    public function __construct(){
+
+        $this->middleware('employer',['except' => array('index','show','apply')]);
+    
+    }
     public function index(){
 
-        $jobs = Job::all()->take(10);
-        return view('welcome', compact('jobs'));
+        $jobs = Job::latest()->limit(10)
+                    ->where('status',1)->get();
+      //  $companies = Company::latest()->limit(12)->get();
+          $companies = Company::get()->random(12);
+        return view('welcome', compact('jobs','companies'));
     }
 
     public function create(){
@@ -66,5 +76,20 @@ class JobsController extends Controller
         $jobs = Job::where('user_id', auth()->user()->id)->get();
         return view('jobs.myjob',compact('jobs'));
     }
+
+    public function apply(Request $request,$id){
+        $jobId = Job::find($id);
+        $jobId->users()->attach(Auth::user()->id);
+        return redirect()->back()->with('message','Application Sent!');
+    }
+
+    public function applicant(){
+        $applicants = Job::has('users')
+                        ->where('user_id',auth()->user()->id)
+                        ->get();
+        return view('jobs.applicants', compact('applicants'));
+    }
+
+
 
 }
